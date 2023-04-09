@@ -1,6 +1,7 @@
 import connectMongo from '@/database/connectMongo';
 import Test from '@/models/testModel';
 
+
 export const getServerSideProps = async () => {
   try {
     console.log('CONNECTING TO MONGO');
