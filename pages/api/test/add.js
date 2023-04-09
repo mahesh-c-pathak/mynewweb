@@ -1,5 +1,6 @@
+
 import connectMongo from '@/database/connectMongo';
-import Test from '../../../models/testModel';
+import Test from '@/models/testModel';
 
 
 /**

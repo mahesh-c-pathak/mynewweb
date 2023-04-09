@@ -1,4 +1,30 @@
-export default function Home() {
+import connectMongo from '@/database/connectMongo';
+import Test from '@/models/testModel';
+
+export const getServerSideProps = async () => {
+  try {
+    console.log('CONNECTING TO MONGO');
+    await connectMongo();
+    console.log('CONNECTED TO MONGO');
+
+    console.log('FETCHING DOCUMENTS');
+    const tests = await Test.find();
+    console.log('FETCHED DOCUMENTS');
+
+    return {
+      props: {
+        tests: JSON.parse(JSON.stringify(tests)),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export default function Home({ tests }) {
   const createTest = async () => {
     const randomNum = Math.floor(Math.random() * 1000);
     const res = await fetch('/api/test/add', {
@@ -20,7 +46,18 @@ export default function Home() {
       <h1>My new web</h1>
       <br />
       <button onClick={createTest}>Create Test</button>
-
+      <div>
+      {tests.map((test) => (
+        <a
+          href="https://nextjs.org/docs"
+          key={test._id}
+        >
+          <h2>{test.name} &rarr;</h2>
+          <p>{test.email}</p>
+        </a>
+      ))}
+    </div>
     </div> 
+
   )
 }
